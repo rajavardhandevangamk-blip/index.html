@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Happy Women's Day 🌸</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --rose:    #e8476a;
+      --deep:    #9b1b4b;
+      --blush:   #f7cdd8;
+      --cream:   #fdf6f0;
+      --gold:    #c8963c;
+      --gold-lt: #f0d080;
+      --ink:     #2a1220;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--cream);
+      color: var(--ink);
+      font-family: 'Cormorant Garamond', serif;
+      overflow-x: hidden;
+    }
+
+    /* ── CANVAS PETALS ── */
+    #petalCanvas {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 2rem;
+      overflow: hidden;
+      background: radial-gradient(ellipse 80% 60% at 50% 30%, #fce8ef 0%, var(--cream) 70%);
+      z-index: 1;
+    }
+
+    .hero-ring {
+      position: absolute;
+      border-radius: 50%;
+      border: 1px solid rgba(200,150,60,.18);
+      animation: pulse-ring 6s ease-in-out infinite;
+    }
+    .hero-ring:nth-child(1) { width: 420px; height: 420px; animation-delay: 0s; }
+    .hero-ring:nth-child(2) { width: 620px; height: 620px; animation-delay: 1.5s; }
+    .hero-ring:nth-child(3) { width: 820px; height: 820px; animation-delay: 3s; }
+    @keyframes pulse-ring {
+      0%, 100% { transform: scale(1); opacity: .3; }
+      50%       { transform: scale(1.04); opacity: .7; }
+    }
+
+    .date-tag {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 1rem;
+      letter-spacing: .35em;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 1.4rem;
+      opacity: 0;
+      animation: fadeUp .8s .3s forwards;
+    }
+
+    .hero-title {
+      font-family: 'Playfair Display', serif;
+      font-weight: 900;
+      font-size: clamp(3rem, 10vw, 7.5rem);
+      line-height: 1.05;
+      color: var(--deep);
+      opacity: 0;
+      animation: fadeUp .9s .6s forwards;
+    }
+    .hero-title em {
+      font-style: italic;
+      color: var(--rose);
+      display: block;
+    }
+
+    .hero-sub {
+      margin-top: 1.5rem;
+      font-size: clamp(1.1rem, 2.5vw, 1.45rem);
+      font-style: italic;
+      color: #7a3050;
+      max-width: 540px;
+      line-height: 1.7;
+      opacity: 0;
+      animation: fadeUp .9s .9s forwards;
+    }
+
+    .scroll-hint {
+      position: absolute;
+      bottom: 2.2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: .4rem;
+      font-size: .78rem;
+      letter-spacing: .2em;
+      color: var(--gold);
+      text-transform: uppercase;
+      opacity: 0;
+      animation: fadeUp .7s 1.6s forwards;
+    }
+    .scroll-hint span { display: block; width: 1px; height: 46px; background: linear-gradient(to bottom, var(--gold), transparent); animation: drip 1.6s ease-in-out infinite; }
+    @keyframes drip { 0%,100%{height:46px;opacity:.8} 50%{height:20px;opacity:.4} }
+
+    /* ── PERSONALISE ── */
+    .section { position: relative; z-index: 1; padding: 5rem 2rem; }
+
+    .personalise {
+      background: linear-gradient(135deg, #9b1b4b 0%, #c8384f 60%, #e8476a 100%);
+      text-align: center;
+      color: white;
+    }
+    .personalise h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.8rem, 5vw, 3rem);
+      font-style: italic;
+      margin-bottom: 1rem;
+    }
+    .personalise p { font-size: 1.15rem; opacity: .85; margin-bottom: 2.2rem; }
+
+    .input-row {
+      display: flex;
+      justify-content: center;
+      gap: .8rem;
+      flex-wrap: wrap;
+    }
+    .input-row input {
+      padding: .85rem 1.4rem;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      border: 2px solid rgba(255,255,255,.5);
+      background: rgba(255,255,255,.15);
+      color: white;
+      border-radius: 3px;
+      outline: none;
+      width: min(320px, 100%);
+      transition: border-color .25s, background .25s;
+    }
+    .input-row input::placeholder { color: rgba(255,255,255,.6); }
+    .input-row input:focus { border-color: white; background: rgba(255,255,255,.25); }
+
+    .btn {
+      padding: .85rem 2rem;
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem;
+      font-style: italic;
+      letter-spacing: .08em;
+      background: white;
+      color: var(--deep);
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+      transition: transform .2s, box-shadow .2s;
+    }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,.18); }
+    .btn:active { transform: translateY(0); }
+
+    .wish-output {
+      margin-top: 2.5rem;
+      min-height: 64px;
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: clamp(1.3rem, 3vw, 2rem);
+      color: var(--gold-lt);
+      opacity: 0;
+      transform: translateY(12px);
+      transition: opacity .5s, transform .5s;
+    }
+    .wish-output.show { opacity: 1; transform: translateY(0); }
+
+    /* Letter card for special names */
+    .letter-output {
+      font-size: unset;
+      font-style: normal;
+    }
+    .letter-card {
+      background: rgba(255,255,255,.12);
+      border: 1px solid rgba(255,255,255,.3);
+      border-radius: 8px;
+      padding: 2.4rem 2.8rem;
+      max-width: 680px;
+      margin: 0 auto;
+      text-align: left;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.05rem, 2vw, 1.2rem);
+      line-height: 1.85;
+      color: rgba(255,255,255,.95);
+      backdrop-filter: blur(4px);
+      position: relative;
+    }
+    .letter-card::before {
+      content: '🌸';
+      position: absolute;
+      top: -18px; right: 24px;
+      font-size: 2.2rem;
+    }
+    .letter-card .l-greeting {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: clamp(1.25rem, 2.5vw, 1.55rem);
+      color: var(--gold-lt);
+      margin-bottom: 1rem;
+      display: block;
+    }
+    .letter-card p { margin-bottom: 1rem; }
+    .letter-card .l-sign {
+      margin-top: 1.4rem;
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 1.15rem;
+      color: var(--gold-lt);
+    }
+    .copy-btn {
+      margin-top: 1.4rem;
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      padding: .55rem 1.3rem;
+      background: rgba(255,255,255,.2);
+      color: white;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: .95rem;
+      border: 1px solid rgba(255,255,255,.4);
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background .2s;
+    }
+    .copy-btn:hover { background: rgba(255,255,255,.35); }
+
+    /* ── QUOTES ── */
+    .quotes-section {
+      background: var(--cream);
+      text-align: center;
+    }
+    .section-label {
+      font-size: .8rem;
+      letter-spacing: .3em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1rem;
+    }
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      color: var(--deep);
+      margin-bottom: 3.5rem;
+    }
+
+    .quote-stage {
+      position: relative;
+      max-width: 700px;
+      margin: 0 auto;
+      min-height: 220px;
+    }
+    .quote-card {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1.4rem;
+      opacity: 0;
+      transform: translateX(40px);
+      transition: opacity .6s, transform .6s;
+      pointer-events: none;
+    }
+    .quote-card.active { opacity: 1; transform: translateX(0); pointer-events: auto; }
+    .quote-card.exit   { opacity: 0; transform: translateX(-40px); }
+
+    .quote-text {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: clamp(1.25rem, 3vw, 1.65rem);
+      color: var(--ink);
+      line-height: 1.6;
+    }
+    .quote-text::before { content: '\201C'; color: var(--rose); font-size: 2.5em; line-height: 0; vertical-align: -.4em; margin-right: .1em; }
+    .quote-text::after  { content: '\201D'; color: var(--rose); font-size: 2.5em; line-height: 0; vertical-align: -.4em; margin-left: .1em; }
+
+    .quote-author {
+      font-size: 1rem;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+
+    .quote-nav {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 1.2rem;
+      margin-top: 18rem;
+    }
+    .q-btn {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      border: 1.5px solid var(--rose);
+      background: transparent;
+      color: var(--rose);
+      font-size: 1.1rem;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background .2s, color .2s;
+    }
+    .q-btn:hover { background: var(--rose); color: white; }
+    .q-dots { display: flex; gap: .5rem; }
+    .q-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--blush);
+      transition: background .3s, transform .3s;
+      cursor: pointer;
+    }
+    .q-dot.on { background: var(--rose); transform: scale(1.3); }
+
+    /* ── PILLARS ── */
+    .pillars-section { background: #fdf0f4; }
+    .pillars-section .section-title { text-align: center; }
+
+    .pillars-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.6rem;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    .pillar-card {
+      background: white;
+      border-radius: 4px;
+      padding: 2.2rem 1.8rem;
+      border-top: 3px solid var(--rose);
+      box-shadow: 0 2px 16px rgba(155,27,75,.06);
+      transition: transform .25s, box-shadow .25s;
+      cursor: default;
+    }
+    .pillar-card:hover { transform: translateY(-6px); box-shadow: 0 14px 36px rgba(155,27,75,.13); }
+    .pillar-icon { font-size: 2.4rem; margin-bottom: 1rem; }
+    .pillar-card h3 { font-family: 'Playfair Display', serif; font-size: 1.35rem; color: var(--deep); margin-bottom: .7rem; }
+    .pillar-card p  { font-size: 1.05rem; line-height: 1.65; color: #5a3040; }
+
+    /* ── TRIBUTE TIMELINE ── */
+    .tribute-section { background: var(--deep); color: white; }
+    .tribute-section .section-label { color: var(--gold-lt); }
+    .tribute-section .section-title { color: white; text-align: center; }
+
+    .timeline {
+      max-width: 680px;
+      margin: 0 auto;
+      position: relative;
+      padding-left: 2.5rem;
+    }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 1px;
+      background: linear-gradient(to bottom, transparent, var(--rose), var(--gold), var(--rose), transparent);
+    }
+    .t-item {
+      position: relative;
+      margin-bottom: 2.8rem;
+      opacity: 0;
+      transform: translateX(-20px);
+      transition: opacity .6s, transform .6s;
+    }
+    .t-item.visible { opacity: 1; transform: translateX(0); }
+    .t-dot {
+      position: absolute;
+      left: -2.5rem;
+      top: .3rem;
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: var(--gold);
+      border: 2px solid var(--deep);
+      box-shadow: 0 0 0 3px var(--gold);
+    }
+    .t-year { font-size: .8rem; letter-spacing: .25em; color: var(--gold-lt); margin-bottom: .4rem; text-transform: uppercase; }
+    .t-name { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-style: italic; margin-bottom: .4rem; }
+    .t-desc { font-size: 1rem; opacity: .8; line-height: 1.6; }
+
+    /* ── CLOSING ── */
+    .closing {
+      background: radial-gradient(ellipse 80% 60% at 50% 80%, #fce8ef 0%, var(--cream) 70%);
+      text-align: center;
+      padding: 7rem 2rem;
+    }
+    .closing-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.5rem, 8vw, 5.5rem);
+      font-weight: 900;
+      color: var(--deep);
+      line-height: 1.1;
+    }
+    .closing-title em { color: var(--rose); font-style: italic; }
+    .closing-sub {
+      margin-top: 1.5rem;
+      font-style: italic;
+      font-size: 1.25rem;
+      color: #7a3050;
+    }
+    .heart-burst {
+      font-size: 3.5rem;
+      display: inline-block;
+      animation: heartbeat 1.8s ease-in-out infinite;
+      margin: 2rem 0;
+    }
+    @keyframes heartbeat { 0%,100%{transform:scale(1)} 30%{transform:scale(1.25)} 50%{transform:scale(1)} 70%{transform:scale(1.15)} }
+
+    .share-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: .6rem;
+      margin-top: 2rem;
+      padding: .9rem 2.4rem;
+      background: var(--rose);
+      color: white;
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 1.05rem;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+      transition: background .2s, transform .2s;
+    }
+    .share-btn:hover { background: var(--deep); transform: translateY(-2px); }
+
+    /* ── UTILS ── */
+    @keyframes fadeUp { from { opacity:0; transform:translateY(24px); } to { opacity:1; transform:translateY(0); } }
+
+    /* ── CONFETTI ── */
+    .confetti-piece {
+      position: fixed;
+      width: 10px; height: 10px;
+      top: -20px;
+      pointer-events: none;
+      z-index: 9999;
+      border-radius: 50%;
+      animation: confettiFall linear forwards;
+    }
+    @keyframes confettiFall {
+      to { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      text-align: center;
+      padding: 1.5rem;
+      font-size: .85rem;
+      color: #b07085;
+      background: #fdf6f0;
+      border-top: 1px solid #f0d0dc;
+      position: relative;
+      z-index: 1;
+    }
+  </style>
+</head>
+<body>
+
+<canvas id="petalCanvas"></canvas>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-ring"></div>
+  <div class="hero-ring"></div>
+  <div class="hero-ring"></div>
+
+  <p class="date-tag">March 8 &nbsp;·&nbsp; International Women's Day</p>
+  <h1 class="hero-title">
+    Happy<br>
+    <em>Women's Day</em>
+  </h1>
+  <p class="hero-sub">Celebrating the strength, grace, and brilliance of every woman who has shaped our world.</p>
+
+  <div class="scroll-hint">
+    Discover
+    <span></span>
+  </div>
+</section>
+
+<!-- PERSONALISE -->
+<section class="section personalise">
+  <h2>Send a Personalised Wish</h2>
+  <p>Enter her name and create a special message just for her.</p>
+  <div class="input-row">
+    <input id="nameInput" type="text" placeholder="Her name…" maxlength="40" />
+    <button class="btn" onclick="generateWish()">✦ Create Wish</button>
+  </div>
+  <div class="wish-output letter-output" id="wishOutput"></div>
+</section>
+
+<!-- QUOTES -->
+<section class="section quotes-section">
+  <p class="section-label">Words of Wisdom</p>
+  <h2 class="section-title">Voices That Changed the World</h2>
+
+  <div class="quote-stage" id="quoteStage"></div>
+
+  <div class="quote-nav">
+    <button class="q-btn" onclick="shiftQuote(-1)">&#8592;</button>
+    <div class="q-dots" id="qDots"></div>
+    <button class="q-btn" onclick="shiftQuote(1)">&#8594;</button>
+  </div>
+</section>
+
+<!-- PILLARS -->
+<section class="section pillars-section">
+  <p class="section-label" style="text-align:center">What We Celebrate</p>
+  <h2 class="section-title">The Pillars of Womanhood</h2>
+  <div class="pillars-grid">
+    <div class="pillar-card">
+      <div class="pillar-icon">🌸</div>
+      <h3>Resilience</h3>
+      <p>Bending without breaking, rising through every storm with quiet, unshakeable strength.</p>
+    </div>
+    <div class="pillar-card">
+      <div class="pillar-icon">🔥</div>
+      <h3>Courage</h3>
+      <p>Speaking truth, leading change, and forging paths where none existed before.</p>
+    </div>
+    <div class="pillar-card">
+      <div class="pillar-icon">💡</div>
+      <h3>Brilliance</h3>
+      <p>Minds that discovered, invented, wrote, and rebuilt civilisations across every age.</p>
+    </div>
+    <div class="pillar-card">
+      <div class="pillar-icon">🤝</div>
+      <h3>Solidarity</h3>
+      <p>Lifting each other up, standing together, and turning shared struggle into shared victory.</p>
+    </div>
+  </div>
+</section>
+
+<!-- TIMELINE TRIBUTE -->
+<section class="section tribute-section">
+  <p class="section-label" style="text-align:center">Pioneers Through History</p>
+  <h2 class="section-title">Women Who Wrote History</h2>
+  <div class="timeline" id="timeline"></div>
+</section>
+
+<!-- CLOSING -->
+<section class="closing">
+  <div class="heart-burst">🌺</div>
+  <h2 class="closing-title">To Every Woman —<br><em>Thank You.</em></h2>
+  <p class="closing-sub">For all that you are, and everything you will become.</p>
+  <br>
+  <button class="share-btn" onclick="launchConfetti()">🎉 Celebrate Her!</button>
+</section>
+
+<footer>Made with love for every woman on Earth &nbsp;·&nbsp; Happy International Women's Day 2026 🌸</footer>
+
+<script>
+/* ──────────── PETAL CANVAS ──────────── */
+const canvas = document.getElementById('petalCanvas');
+const ctx    = canvas.getContext('2d');
+
+function resize() {
+  canvas.width  = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+resize();
+window.addEventListener('resize', resize);
+
+const PETAL_COUNT = 28;
+const petals = Array.from({ length: PETAL_COUNT }, () => newPetal(true));
+
+function newPetal(init) {
+  return {
+    x:     Math.random() * window.innerWidth,
+    y:     init ? Math.random() * window.innerHeight : -20,
+    r:     6 + Math.random() * 10,
+    speed: .4 + Math.random() * .8,
+    drift: (Math.random() - .5) * .4,
+    angle: Math.random() * Math.PI * 2,
+    spin:  (Math.random() - .5) * .04,
+    hue:   330 + Math.random() * 30,
+    sat:   60 + Math.random() * 20,
+    lgt:   70 + Math.random() * 20,
+    alpha: .5 + Math.random() * .4,
+  };
+}
+
+function drawPetal(p) {
+  ctx.save();
+  ctx.translate(p.x, p.y);
+  ctx.rotate(p.angle);
+  ctx.globalAlpha = p.alpha;
+  ctx.fillStyle = `hsl(${p.hue},${p.sat}%,${p.lgt}%)`;
+  ctx.beginPath();
+  ctx.ellipse(0, 0, p.r, p.r * .55, 0, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.restore();
+}
+
+function animPetals() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  for (const p of petals) {
+    p.y += p.speed;
+    p.x += p.drift + Math.sin(p.y * .015) * .4;
+    p.angle += p.spin;
+    if (p.y > canvas.height + 20) Object.assign(p, newPetal(false));
+    drawPetal(p);
+  }
+  requestAnimationFrame(animPetals);
+}
+animPetals();
+
+/* ──────────── WISHES ──────────── */
+/* ── Named letters ── */
+const LETTERS = {
+  meenakshi: {
+    greeting: 'To My Dear Mother Meenakshi,',
+    body: [
+      "Happy Women's Day! 🌸",
+      "On this special day, I want to thank you for being such a strong and inspiring working woman. You manage both your work and our family with so much dedication and love. Your hard work, patience, and strength motivate me every day.",
+      "Even with a busy schedule, you always take care of our family and support us in everything we do. I truly admire your determination and the sacrifices you make for us. You are not only a great mother but also a role model for me.",
+      "Thank you for always guiding me, encouraging me, and teaching me the value of hard work and responsibility. I am proud to be your child.",
+      "Once again, wishing you a very Happy Women's Day! 💐 May you always stay happy, healthy, and successful.",
+    ],
+    sign: 'With love and respect, Chintu'
+  },
+  sindhu: {
+    greeting: 'To My Dear Sindhu,',
+    body: [
+      "Happy Women's Day! 🌸",
+      "On this special day, I want to wish you a very Happy Women's Day. Even though we fight a lot sometimes 😅, you are still a very important person in my life. Growing up together with you has given me many memories that I will always cherish.",
+      "You are a strong and caring woman, and I truly admire the way you take care of our family. I also want to thank you for giving our family the most beautiful gift — your lovely baby Jashritha. She brings so much happiness, joy, and laughter to all of us. Watching her grow makes our family even more special.",
+      "Even though we argue and tease each other often, deep inside I am always grateful to have a sister like you. I wish you happiness, good health, and success in everything you do.",
+      "Once again, wishing you a very Happy Women's Day! 💐",
+    ],
+    sign: 'With love, Chintu'
+  },
+  anjum: {
+    greeting: 'To My Dear Anjum,',
+    body: [
+      "Happy Women's Day! 🌸",
+      "On this special day, I want to wish you a very Happy Women's Day. I also want to thank you for being such an important person in my life.",
+      "You have always supported me during my tough times. Whenever I felt stressed or confused, you were there to encourage me and help me stay strong. Your words and support have helped me move forward when things were difficult.",
+      "You are like a bright light in my life. When I was surrounded by negative or toxic people, you stood beside me and reminded me to stay positive and believe in myself. That support means a lot to me.",
+      "I truly appreciate your kindness, strength, and the positivity you bring into my life. Thank you for always being supportive and understanding.",
+      "Once again, wishing you a very Happy Women's Day! 💐 May you always stay happy, strong, and successful.",
+    ],
+    sign: 'With love, Chintu'
+  },
+  sai: {
+    greeting: 'To My Dear Sai,',
+    body: [
+      "Happy Women's Day! 🌸",
+      "On this special day, I want to wish you a very Happy Women's Day. Even though you are my younger sister, you have always been very strong and supportive.",
+      "I want to thank you for always standing by me during my tough times. Your support, encouragement, and understanding have helped me a lot when things were difficult. Having a sister like you makes me feel lucky and grateful.",
+      "You always bring positivity and happiness to our family, and I truly appreciate the care and kindness you show to everyone around you.",
+      "Once again, wishing you a very Happy Women's Day! 💐 May you always stay happy, confident, and successful in life.",
+    ],
+    sign: 'With love, Chintu'
+  }
+};
+
+const genericWishes = [
+  n => `Dear ${n}, may your day bloom as beautifully as you do. Happy Women's Day! 🌸`,
+  n => `${n}, the world is brighter because you are in it. Wishing you a day full of love and joy! 💐`,
+  n => `To the remarkable ${n} — your strength inspires everyone around you. Happy Women's Day! ✨`,
+  n => `${n}, you are proof that grace and power are one and the same. Celebrate yourself today! 🌺`,
+  n => `Happy Women's Day, ${n}! Keep shining, keep soaring — the sky has no limit for you. 🌟`,
+];
+
+function generateWish() {
+  const name    = document.getElementById('nameInput').value.trim();
+  const out     = document.getElementById('wishOutput');
+  const key     = name.toLowerCase().replace(/\s+/g,'');
+  const letter  = LETTERS[key];
+
+  out.classList.remove('show');
+  out.innerHTML = '';
+
+  setTimeout(() => {
+    if (letter) {
+      const paragraphs = letter.body.map(p => `<p>${p}</p>`).join('');
+      out.innerHTML = `
+        <div class="letter-card">
+          <span class="l-greeting">${letter.greeting}</span>
+          ${paragraphs}
+          <div class="l-sign">${letter.sign}</div>
+        </div>`;
+    } else {
+      const displayName = name || 'Her';
+      const wish = genericWishes[Math.floor(Math.random() * genericWishes.length)](displayName);
+      out.innerHTML = `<span style="font-family:'Playfair Display',serif;font-style:italic;font-size:clamp(1.3rem,3vw,2rem);color:var(--gold-lt)">${wish}</span>`;
+    }
+    out.classList.add('show');
+  }, 80);
+}
+
+document.getElementById('nameInput').addEventListener('keydown', e => {
+  if (e.key === 'Enter') generateWish();
+});
+
+/* ──────────── QUOTES CAROUSEL ──────────── */
+const QUOTES = [
+  { text: "I am no bird; and no net ensnares me.", author: "Charlotte Brontë" },
+  { text: "The most courageous act is still to think for yourself. Aloud.", author: "Coco Chanel" },
+  { text: "Well-behaved women seldom make history.", author: "Laurel Thatcher Ulrich" },
+  { text: "I am not free while any woman is unfree, even when her shackles are very different from my own.", author: "Audre Lorde" },
+  { text: "Feminism isn't about making women strong. Women are already strong. It's about changing the way the world perceives that strength.", author: "G.D. Anderson" },
+  { text: "I have learned over the years that when one's mind is made up, this diminishes fear.", author: "Rosa Parks" },
+];
+
+let qIndex = 0;
+const stage = document.getElementById('quoteStage');
+const dotsEl = document.getElementById('qDots');
+
+function buildQuotes() {
+  QUOTES.forEach((q, i) => {
+    const card = document.createElement('div');
+    card.className = 'quote-card' + (i === 0 ? ' active' : '');
+    card.innerHTML = `<p class="quote-text">${q.text}</p><span class="quote-author">— ${q.author}</span>`;
+    stage.appendChild(card);
+
+    const dot = document.createElement('span');
+    dot.className = 'q-dot' + (i === 0 ? ' on' : '');
+    dot.onclick = () => goToQuote(i);
+    dotsEl.appendChild(dot);
+  });
+}
+
+function goToQuote(n) {
+  const cards = stage.querySelectorAll('.quote-card');
+  const dots  = dotsEl.querySelectorAll('.q-dot');
+  cards[qIndex].classList.remove('active');
+  cards[qIndex].classList.add('exit');
+  dots[qIndex].classList.remove('on');
+  setTimeout(() => cards[qIndex - 1 < 0 ? QUOTES.length - 1 : qIndex].classList.remove('exit'), 600);
+  qIndex = (n + QUOTES.length) % QUOTES.length;
+  cards[qIndex].classList.add('active');
+  dots[qIndex].classList.add('on');
+  // remove old exit
+  setTimeout(() => {
+    stage.querySelectorAll('.quote-card.exit').forEach(c => c.classList.remove('exit'));
+  }, 700);
+}
+
+function shiftQuote(dir) { goToQuote(qIndex + dir); }
+buildQuotes();
+
+// auto-advance
+setInterval(() => shiftQuote(1), 5000);
+
+/* ──────────── TIMELINE ──────────── */
+const TIMELINE = [
+  { year: "1903", name: "Marie Curie", desc: "First woman to win a Nobel Prize — and the only person ever to win in two different sciences." },
+  { year: "1955", name: "Rosa Parks", desc: "Refused to give up her bus seat, sparking the Montgomery Bus Boycott and the Civil Rights Movement." },
+  { year: "1963", name: "Valentina Tereshkova", desc: "Became the first woman to travel to space aboard Vostok 6." },
+  { year: "1979", name: "Mother Teresa", desc: "Awarded the Nobel Peace Prize for her lifelong work in service of the poorest of the poor." },
+  { year: "2014", name: "Malala Yousafzai", desc: "Youngest Nobel Peace Prize laureate, fighting fearlessly for girls' right to education." },
+  { year: "2021", name: "Kamala Harris", desc: "Became the first female, first Black, and first South Asian Vice President of the United States." },
+];
+
+const tl = document.getElementById('timeline');
+TIMELINE.forEach(e => {
+  const item = document.createElement('div');
+  item.className = 't-item';
+  item.innerHTML = `<div class="t-dot"></div><p class="t-year">${e.year}</p><h3 class="t-name">${e.name}</h3><p class="t-desc">${e.desc}</p>`;
+  tl.appendChild(item);
+});
+
+/* ──────────── INTERSECTION OBSERVER ──────────── */
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: .2 });
+
+document.querySelectorAll('.t-item').forEach(el => observer.observe(el));
+
+/* ──────────── CONFETTI ──────────── */
+function launchConfetti() {
+  const colors = ['#e8476a','#9b1b4b','#c8963c','#f0d080','#f7cdd8','#fff'];
+  for (let i = 0; i < 80; i++) {
+    const p = document.createElement('div');
+    p.className = 'confetti-piece';
+    const size = 6 + Math.random() * 10;
+    p.style.cssText = `
+      left: ${Math.random() * 100}vw;
+      width: ${size}px;
+      height: ${size}px;
+      background: ${colors[Math.floor(Math.random() * colors.length)]};
+      border-radius: ${Math.random() > .5 ? '50%' : '2px'};
+      animation-duration: ${1.5 + Math.random() * 2}s;
+      animation-delay: ${Math.random() * .8}s;
+    `;
+    document.body.appendChild(p);
+    p.addEventListener('animationend', () => p.remove());
+  }
+}
+</script>
+</body>
+</html>
